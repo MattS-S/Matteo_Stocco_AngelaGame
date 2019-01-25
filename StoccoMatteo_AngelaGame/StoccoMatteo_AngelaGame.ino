@@ -48,6 +48,7 @@ void aggiornamentovariabili()
     punteggiomomentaneo = punteggiomomentaneo + numerogiocatore2;
     Serial.print("Punteggio momentaneo: ");
     Serial.println(punteggiomomentaneo);
+    Serial.println(turnogiocatore);
     turnogiocatore = 0;
     turnopartita++;
   } else {
@@ -55,6 +56,7 @@ void aggiornamentovariabili()
     punteggiomomentaneo = punteggiomomentaneo + numerogiocatore1;
     Serial.print("Punteggio momentaneo: ");
     Serial.println(punteggiomomentaneo);
+    Serial.println(turnogiocatore);
     turnogiocatore = 1;
     turnopartita++;
   }
@@ -115,35 +117,28 @@ void turnozero()
 
 void metodoswitch()
 {
-  if (turnogiocatore % 2 == 1)
+  if (turnogiocatore % 2 == 1) {
     switch (numerogiocatore1)
     {
       case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
       case 6:
         controllogiocatore();
         aggiornamentovariabili();
-      case 2:
-      case 5:
-        controllogiocatore();
-        aggiornamentovariabili();
-      case 3:
-      case 4:
-        controllogiocatore();
-        aggiornamentovariabili();
-    } else {
+    }
+  } else {
 
     switch (numerogiocatore2)
     {
       case 1:
-      case 6:
-        controllogiocatore();
-        aggiornamentovariabili();
       case 2:
-      case 5:
-        controllogiocatore();
-        aggiornamentovariabili();
       case 3:
       case 4:
+      case 5:
+      case 6:
         controllogiocatore();
         aggiornamentovariabili();
     }
@@ -159,6 +154,10 @@ void sceltagiocatore()
     if (turnogiocatore == 1)
     {
       numerogiocatore2 = Serial.parseInt();
+      metodoswitch();
+    } else if (turnogiocatore == 0)
+    {
+      numerogiocatore1 = Serial.parseInt();
       metodoswitch();
     }
   }
