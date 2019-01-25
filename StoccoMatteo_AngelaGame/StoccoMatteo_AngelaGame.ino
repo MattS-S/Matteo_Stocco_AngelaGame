@@ -17,6 +17,8 @@ void setup() {
   Serial.println("Scegli punteggio obiettivo (scrivere nella barra di input)");
 }
 
+
+
 void inseriscipunteggioobiettivo()
 {
   punteggioobiettivo = Serial.parseInt();
@@ -36,87 +38,128 @@ void inseriscipunteggioobiettivo()
   }
 }
 
+
+
+void aggiornamentovariabili()
+{
+  if (turnopartita % 2 == 1)
+  {
+    Serial.println(numerogiocatore2);
+    punteggiomomentaneo = punteggiomomentaneo + numerogiocatore2;
+    Serial.print("Punteggio momentaneo: ");
+    Serial.println(punteggiomomentaneo);
+    turnogiocatore = 0;
+    turnopartita++;
+  } else {
+    Serial.println(numerogiocatore1);
+    punteggiomomentaneo = punteggiomomentaneo + numerogiocatore1;
+    Serial.print("Punteggio momentaneo: ");
+    Serial.println(punteggiomomentaneo);
+    turnogiocatore = 1;
+    turnopartita++;
+  }
+}
+
+
+
+void controllogiocatore()
+{
+  if (turnopartita % 2 == 1)
+  {
+    while ((numerogiocatore2  == 7 - numerogiocatore1) || (numerogiocatore2  == numerogiocatore1) || (numerogiocatore2 > 6) || (numerogiocatore2 <= 0))
+    {
+      numerogiocatore2 = Serial.parseInt();
+      if ((numerogiocatore2  == 7 - numerogiocatore1) || (numerogiocatore2  == numerogiocatore1) || (numerogiocatore2 > 6))
+      {
+        Serial.println("Numero scelto non valido");
+      }
+    }
+  } else {
+    while ((numerogiocatore1  == 7 - numerogiocatore2) || (numerogiocatore1  == numerogiocatore2) || (numerogiocatore1 > 6) || (numerogiocatore1 <= 0))
+    {
+      numerogiocatore1 = Serial.parseInt();
+      if ((numerogiocatore1  == 7 - numerogiocatore2) || (numerogiocatore1  == numerogiocatore2) || (numerogiocatore1 > 6))
+      {
+        Serial.println("Numero scelto non valido");
+      }
+    }
+  }
+}
+
+
+void turnozero()
+{
+  numerogiocatore1 = Serial.parseInt();
+  while ((numerogiocatore1 <= 0) || (numerogiocatore1 > 7))
+  {
+    if (numerogiocatore1 == 0)
+    {
+      numerogiocatore1 = Serial.parseInt();
+    }
+    if (numerogiocatore1 > 7 || (numerogiocatore1 < 0)) {
+      numerogiocatore1 = Serial.parseInt();
+      Serial.println("Numero scelto non valido");
+    }
+  }
+
+  if ((numerogiocatore1 > 0) && (numerogiocatore1 < 7))
+  {
+    aggiornamentovariabili();
+  } else if (numerogiocatore1 == 7)
+  {
+    //se vuole inserire lo 0 deve usare il 7
+    numerogiocatore1 = 0;
+    aggiornamentovariabili();
+  }
+}
+
+void metodoswitch()
+{
+  if (turnogiocatore % 2 == 1)
+    switch (numerogiocatore1)
+    {
+      case 1:
+      case 6:
+        controllogiocatore();
+        aggiornamentovariabili();
+      case 2:
+      case 5:
+        controllogiocatore();
+        aggiornamentovariabili();
+      case 3:
+      case 4:
+        controllogiocatore();
+        aggiornamentovariabili();
+    } else {
+
+    switch (numerogiocatore2)
+    {
+      case 1:
+      case 6:
+        controllogiocatore();
+        aggiornamentovariabili();
+      case 2:
+      case 5:
+        controllogiocatore();
+        aggiornamentovariabili();
+      case 3:
+      case 4:
+        controllogiocatore();
+        aggiornamentovariabili();
+    }
+  }
+}
+
 void sceltagiocatore()
 {
   if (turnopartita == 0)
   {
-    numerogiocatore1 = Serial.parseInt();
-    while ((numerogiocatore1 <= 0) || (numerogiocatore1 > 6))
-    {
-      if (numerogiocatore1 == 0)
-      {
-        numerogiocatore1 = Serial.parseInt();
-      } else {
-        numerogiocatore1 = Serial.parseInt();
-        Serial.println("Numero scelto non valido");
-      }
-    }
-    if ((numerogiocatore1 >= 0) && (numerogiocatore1 < 7))
-    {
-      Serial.println(numerogiocatore1);
-      punteggiomomentaneo = punteggiomomentaneo + numerogiocatore1;
-      Serial.print("Punteggio momentaneo: ");
-      Serial.println(punteggiomomentaneo);
-      turnogiocatore = 1;
-      turnopartita++;
-    }
+    turnozero();
   } else {
     if (turnogiocatore == 1)
     {
       numerogiocatore2 = Serial.parseInt();
-      switch (numerogiocatore1)
-      {
-        case 1:
-        case 6:
-          while ((numerogiocatore2  == 1) || (numerogiocatore2  == 6) || (numerogiocatore2 > 6) || (numerogiocatore2 <= 0))
-          {
-            numerogiocatore2 = Serial.parseInt();
-            if ((numerogiocatore2  == 1) || (numerogiocatore2  == 6) || (numerogiocatore2 > 6))
-            {
-              Serial.println("Numero scelto non valido");
-            }
-          }
-          Serial.println(numerogiocatore2);
-          punteggiomomentaneo = punteggiomomentaneo + numerogiocatore2;
-          Serial.print("Punteggio momentaneo: ");
-          Serial.println(punteggiomomentaneo);
-          turnogiocatore = 0;
-          turnopartita++;
-          
-        case 2:
-        case 5:
-          while ((numerogiocatore2  == 2) || (numerogiocatore2  == 5) || (numerogiocatore2 > 6) || (numerogiocatore2 <= 0))
-          {
-            numerogiocatore2 = Serial.parseInt();
-            if ((numerogiocatore2  == 2) || (numerogiocatore2  == 5) || (numerogiocatore2 > 6))
-            {
-              Serial.println("Numero scelto non valido");
-            }
-          }
-          Serial.println(numerogiocatore2);
-          punteggiomomentaneo = punteggiomomentaneo + numerogiocatore2;
-          Serial.print("Punteggio momentaneo: ");
-          Serial.println(punteggiomomentaneo);
-          turnogiocatore = 0;
-          turnopartita++;
-
-        case 3:
-        case 4:
-          while ((numerogiocatore2  == 3) || (numerogiocatore2  == 4) || (numerogiocatore2 > 6) || (numerogiocatore2 <= 0))
-          {
-            numerogiocatore2 = Serial.parseInt();
-            if ((numerogiocatore2  == 3) || (numerogiocatore2  == 4) || (numerogiocatore2 > 6))
-            {
-              Serial.println("Numero scelto non valido");
-            }
-          }
-          Serial.println(numerogiocatore2);
-          punteggiomomentaneo = punteggiomomentaneo + numerogiocatore2;
-          Serial.print("Punteggio momentaneo: ");
-          Serial.println(punteggiomomentaneo);
-          turnogiocatore = 0;
-          turnopartita++;
-      }
+      metodoswitch();
     }
   }
 }
