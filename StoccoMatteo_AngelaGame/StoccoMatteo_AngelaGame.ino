@@ -89,6 +89,19 @@ void controllogiocatore()
 }
 
 
+void controllo()
+{
+  if ((numerogiocatore1 > 0) && (numerogiocatore1 < 7))
+  {
+    aggiornamentovariabili();
+  } else if (numerogiocatore1 == 7)
+  {
+    //se vuole inserire lo 0 deve usare il 7
+    numerogiocatore1 = 0;
+    aggiornamentovariabili();
+  }
+}
+
 void turnozero()
 {
   numerogiocatore1 = Serial.parseInt();
@@ -103,29 +116,15 @@ void turnozero()
       Serial.println("Numero scelto non valido");
     }
   }
-
-  if ((numerogiocatore1 > 0) && (numerogiocatore1 < 7))
-  {
-    aggiornamentovariabili();
-  } else if (numerogiocatore1 == 7)
-  {
-    //se vuole inserire lo 0 deve usare il 7
-    numerogiocatore1 = 0;
-    aggiornamentovariabili();
-  }
+  controllo();
 }
 
-void metodoswitch()
+
+void turno()
 {
   if (turnogiocatore % 2 == 1) {
     switch (numerogiocatore1)
     {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
         controllogiocatore();
         aggiornamentovariabili();
     }
@@ -133,17 +132,13 @@ void metodoswitch()
 
     switch (numerogiocatore2)
     {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
         controllogiocatore();
         aggiornamentovariabili();
     }
   }
 }
+
+
 
 void sceltagiocatore()
 {
@@ -154,11 +149,11 @@ void sceltagiocatore()
     if (turnogiocatore == 1)
     {
       numerogiocatore2 = Serial.parseInt();
-      metodoswitch();
+      turno();
     } else if (turnogiocatore == 0)
     {
       numerogiocatore1 = Serial.parseInt();
-      metodoswitch();
+      turno();
     }
   }
 }
