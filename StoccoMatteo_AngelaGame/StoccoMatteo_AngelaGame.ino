@@ -14,13 +14,12 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Gioco Angela");
   delay(1500);
-  Serial.println("Scegli punteggio obiettivo (scrivere nella barra di input)");
 }
-
 
 
 void inseriscipunteggioobiettivo()
 {
+  Serial.println("Scegli punteggio obiettivo (scrivere nella barra di input)");
   punteggioobiettivo = Serial.parseInt();
   while (punteggioobiettivo < 30)
   {
@@ -125,9 +124,11 @@ void vittoria()
   if (punteggioobiettivo == punteggiomomentaneo)
   {
     Serial.println("Hai vinto");
+    turnogiocatore = 2;
   } else if (punteggioobiettivo < punteggiomomentaneo)
   {
     Serial.println("Hai perso");
+    turnogiocatore = 2;
   }
 }
 
@@ -164,6 +165,15 @@ void sceltagiocatore()
   }
 }
 
+void restart()
+{
+  numerogiocatore1 = 0;
+  numerogiocatore2 = 0;
+  punteggioobiettivo = 30;
+  punteggiomomentaneo = 0;
+  turnogiocatore = 0;
+  turnopartita = 0;
+}
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -172,5 +182,10 @@ void loop() {
     inseriscipunteggioobiettivo();
   }
   sceltagiocatore();
+  if (turnogiocatore == 2)
+  {
+    delay(2000);
+    restart();
+  }
 
 }
