@@ -34,6 +34,8 @@ void inseriscipunteggioobiettivo()
   if ((punteggioobiettivo >= 30) && (punteggioobiettivo < 100))
   {
     Serial.println(punteggioobiettivo);
+    delay(1000);
+    Serial.println("Inizia a giocare");
   }
 }
 
