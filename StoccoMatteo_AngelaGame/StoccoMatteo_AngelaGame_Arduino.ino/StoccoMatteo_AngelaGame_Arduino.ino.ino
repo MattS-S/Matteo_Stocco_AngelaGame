@@ -48,31 +48,45 @@ void aspetta()
   }
 }
 
-void cambiaselezione()
+void UPPremuto()
+{
+  if (BottonePremuto() == UP)
+  {
+    while (BottonePremuto() == UP)
+    {  }
+    punteggioobiettivo++;
+    lcd.setCursor(7, 1);
+    lcd.print(punteggioobiettivo);
+  }
+}
+
+void DOWNPremuto()
+{
+  if (BottonePremuto() == DOWN)
+  {
+    while (BottonePremuto() == DOWN)
+    {  }
+    punteggioobiettivo--;
+    lcd.setCursor(7, 1);
+    lcd.print(punteggioobiettivo);
+  }
+}
+
+void RIGHTPremuto()
 {
   if (BottonePremuto() == RIGHT)
   {
-    if (numeroselezionato == 0)
-    {
-      numeroselezionato = 1;
-    } else {
-      numeroselezionato = 0;
-    }
+    while (BottonePremuto() == RIGHT)
+    {  }
+    punteggioobiettivo += 10;
+    lcd.setCursor(7, 1);
+    lcd.print(punteggioobiettivo);
   }
 }
 
 void controlloselezione()
 {
-  if (numeroselezionato == 0)
-  {
-    punteggioobiettivo += 10;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
-  } else {
-    punteggioobiettivo++;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
-  }
+  
 }
 
 void sceltapunteggio()
@@ -86,13 +100,9 @@ void sceltapunteggio()
 
   while (!finito)
   {
-    cambiaselezione();
-    if (BottonePremuto() == UP)
-    {
-      while (BottonePremuto() == UP)
-      {  }
-      controlloselezione();
-    }
+    UPPremuto();
+    DOWNPremuto();
+    RIGHTPremuto();
   }
 }
 
@@ -103,6 +113,8 @@ void inizia()
   lcd.print("Inizio gioco");
   aspetta();
 }
+
+
 void loop() {
   // put your main code here, to run repeatedly:
   if (turnopartita == 0)
