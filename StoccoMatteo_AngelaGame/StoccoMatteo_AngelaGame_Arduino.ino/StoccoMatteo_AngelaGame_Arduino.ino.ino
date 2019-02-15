@@ -2,7 +2,6 @@
 
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
-int numeroselezionato = 0;
 int turnogiocatore = 0;
 int turnopartita = 0;
 int ngio1 = 0;
@@ -25,7 +24,7 @@ int BottonePremuto() {
   if (bottone > 1000) return NONE;
   if (bottone < 50)   return RIGHT;
   if (bottone < 250)  return UP;
-  if (bottone < 450)  return DOWN;
+  if (bottone < 400)  return DOWN;
   if (bottone < 600)  return LEFT;
   if (bottone < 920)  return SELECT;
   return NONE;
@@ -84,9 +83,24 @@ void RIGHTPremuto()
   }
 }
 
+void LEFTPremuto()
+{
+  if (BottonePremuto() == LEFT)
+  {
+    while (BottonePremuto() == LEFT)
+    {  }
+    punteggioobiettivo -= 10;
+    lcd.setCursor(7, 1);
+    lcd.print(punteggioobiettivo);
+  }
+}
+
 void controlloselezione()
 {
-  
+  UPPremuto();
+  DOWNPremuto();
+  RIGHTPremuto();
+  LEFTPremuto();
 }
 
 void sceltapunteggio()
@@ -100,9 +114,12 @@ void sceltapunteggio()
 
   while (!finito)
   {
-    UPPremuto();
-    DOWNPremuto();
-    RIGHTPremuto();
+    controlloselezione();
+    if(BottonePremuto() == SELECT)
+    {
+      turnopartita = 1;
+      finito = true;
+    }
   }
 }
 
