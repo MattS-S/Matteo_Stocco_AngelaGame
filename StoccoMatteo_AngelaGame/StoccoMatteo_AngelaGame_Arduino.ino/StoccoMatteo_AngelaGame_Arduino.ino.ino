@@ -37,7 +37,7 @@ void setup() {
   delay(3000);
 }
 
-
+//ASPETTA
 void aspetta()
 {
   btnpremuto = BottonePremuto();
@@ -47,15 +47,19 @@ void aspetta()
   }
 }
 
+//SCELTA OBIETTIVO
 void UPPremuto()
 {
   if (BottonePremuto() == UP)
   {
-    while (BottonePremuto() == UP)
-    {  }
-    punteggioobiettivo++;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
+    if (punteggioobiettivo < 99)
+    {
+      while (BottonePremuto() == UP)
+      {  }
+      punteggioobiettivo++;
+      lcd.setCursor(7, 1);
+      lcd.print(punteggioobiettivo);
+    }
   }
 }
 
@@ -63,11 +67,14 @@ void DOWNPremuto()
 {
   if (BottonePremuto() == DOWN)
   {
-    while (BottonePremuto() == DOWN)
-    {  }
-    punteggioobiettivo--;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
+    if (punteggioobiettivo > 30)
+    {
+      while (BottonePremuto() == DOWN)
+      {  }
+      punteggioobiettivo--;
+      lcd.setCursor(7, 1);
+      lcd.print(punteggioobiettivo);
+    }
   }
 }
 
@@ -75,11 +82,14 @@ void RIGHTPremuto()
 {
   if (BottonePremuto() == RIGHT)
   {
-    while (BottonePremuto() == RIGHT)
-    {  }
-    punteggioobiettivo += 10;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
+    if (punteggioobiettivo < 90)
+    {
+      while (BottonePremuto() == RIGHT)
+      {  }
+      punteggioobiettivo += 10;
+      lcd.setCursor(7, 1);
+      lcd.print(punteggioobiettivo);
+    }
   }
 }
 
@@ -87,11 +97,14 @@ void LEFTPremuto()
 {
   if (BottonePremuto() == LEFT)
   {
-    while (BottonePremuto() == LEFT)
-    {  }
-    punteggioobiettivo -= 10;
-    lcd.setCursor(7, 1);
-    lcd.print(punteggioobiettivo);
+    if (punteggioobiettivo >= 40)
+    {
+      while (BottonePremuto() == LEFT)
+      {  }
+      punteggioobiettivo -= 10;
+      lcd.setCursor(7, 1);
+      lcd.print(punteggioobiettivo);
+    }
   }
 }
 
@@ -115,10 +128,11 @@ void sceltapunteggio()
   while (!finito)
   {
     controlloselezione();
-    if(BottonePremuto() == SELECT)
+    if (BottonePremuto() == SELECT)
     {
       turnopartita = 1;
       finito = true;
+      delay(1000);
     }
   }
 }
@@ -129,6 +143,93 @@ void inizia()
   lcd.setCursor(2, 0);
   lcd.print("Inizio gioco");
   aspetta();
+  delay(1000);
+}
+
+//SCELTA GIOCATORE
+void turnozero()
+{
+  messaggio();
+  bool finito = false;
+  while (!finito)
+  {
+    NumeroGiocatore();
+    if (BottonePremuto() == SELECT)
+    {
+      aggiornavariabili();
+      turnogiocatore++;
+      finito = true;
+      delay(1000);
+    }
+  }
+}
+
+void NumeroGiocatore()
+{
+  if (BottonePremuto() == UP)
+  {
+    if (ngio1 < 6)
+    {
+      while (BottonePremuto() == UP)
+      {  }
+      ngio1++;
+      lcd.setCursor(7, 1);
+      lcd.print(ngio1);
+    }
+  }
+  if (BottonePremuto() == DOWN)
+  {
+    if (ngio1 > 0)
+    {
+      while (BottonePremuto() == DOWN)
+      {  }
+      ngio1--;
+      lcd.setCursor(7, 1);
+      lcd.print(ngio1);
+    }
+  }
+}
+
+void messaggio()
+{
+  lcd.clear();
+  lcd.setCursor(4, 0);
+  lcd.print("Gioca G1");
+  delay(1500);
+  lcd.clear();
+  lcd.setCursor(2, 0);
+  lcd.print("Scegli numero");
+  lcd.setCursor(7, 1);
+  lcd.print(ngio1);
+}
+
+void aggiornavariabili()
+{
+  if (turnogiocatore % 2 == 1)
+  {
+    punteggiomomentaneo += ngio2;
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Punteggio");
+    lcd.setCursor(7,1);
+    lcd.print(punteggiomomentaneo);
+    delay(1500);
+    turnogiocatore++;
+    } else {
+    punteggiomomentaneo += ngio1;
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Punteggio");
+    lcd.setCursor(7,1);
+    lcd.print(punteggiomomentaneo);
+    delay(1500);
+    turnogiocatore++;
+  }
+}
+
+void sceltagiocatore()
+{
+
 }
 
 
@@ -138,5 +239,9 @@ void loop() {
   {
     inizia();
     sceltapunteggio();
+  }
+  else if (turnopartita == 1)
+  {
+    turnozero();
   }
 }
