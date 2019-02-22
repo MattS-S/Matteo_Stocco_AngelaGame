@@ -157,7 +157,53 @@ void turnozero()
     if (BottonePremuto() == SELECT)
     {
       aggiornavariabili();
-      turnogiocatore++;
+      finito = true;
+      delay(1000);
+    }
+  }
+}
+
+
+void controllogiocatore()
+{
+  if (turnogiocatore % 2 == 1)
+  {
+    while ((ngio2  == 7 - ngio1) || (ngio2  == ngio1))
+    {
+      if ((ngio2  == 7 - ngio1) || (ngio2  == ngio1))
+      {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Numero invalido");
+        delay(1500);
+      }
+    }
+  } else if (turnogiocatore % 2 == 0) {
+    while ((ngio1  == 7 - ngio2) || (ngio1  == ngio2))
+    {
+      if ((ngio1  == 7 - ngio2) || (ngio1  == ngio2))
+      {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Numero invalido");
+        delay(1500);
+      }
+    }
+  }
+}
+
+
+void turno()
+{
+  messaggio();
+  bool finito = false;
+  while (!finito)
+  {
+    NumeroGiocatore();
+    if ((BottonePremuto() == SELECT))
+    {
+      controllogiocatore();
+      aggiornavariabili();
       finito = true;
       delay(1000);
     }
@@ -166,41 +212,82 @@ void turnozero()
 
 void NumeroGiocatore()
 {
-  if (BottonePremuto() == UP)
+  if (turnogiocatore % 2 == 0)
   {
-    if (ngio1 < 6)
+    if (BottonePremuto() == UP)
     {
-      while (BottonePremuto() == UP)
-      {  }
-      ngio1++;
-      lcd.setCursor(7, 1);
-      lcd.print(ngio1);
+      if (ngio1 < 6)
+      {
+        while (BottonePremuto() == UP)
+        {  }
+        ngio1++;
+        lcd.setCursor(7, 1);
+        lcd.print(ngio1);
+      }
     }
-  }
-  if (BottonePremuto() == DOWN)
-  {
-    if (ngio1 > 0)
+    if (BottonePremuto() == DOWN)
     {
-      while (BottonePremuto() == DOWN)
-      {  }
-      ngio1--;
-      lcd.setCursor(7, 1);
-      lcd.print(ngio1);
+      if (ngio1 > 0)
+      {
+        while (BottonePremuto() == DOWN)
+        {  }
+        ngio1--;
+        lcd.setCursor(7, 1);
+        lcd.print(ngio1);
+      }
+    }
+  } else
+  {
+    if (BottonePremuto() == UP)
+    {
+      if (ngio2 < 6)
+      {
+        while (BottonePremuto() == UP)
+        {  }
+        ngio2++;
+        lcd.setCursor(7, 1);
+        lcd.print(ngio2);
+      }
+    }
+    if (BottonePremuto() == DOWN)
+    {
+      if (ngio2 > 0)
+      {
+        while (BottonePremuto() == DOWN)
+        {  }
+        ngio2--;
+        lcd.setCursor(7, 1);
+        lcd.print(ngio2);
+      }
     }
   }
 }
 
+
 void messaggio()
 {
-  lcd.clear();
-  lcd.setCursor(4, 0);
-  lcd.print("Gioca G1");
-  delay(1500);
-  lcd.clear();
-  lcd.setCursor(2, 0);
-  lcd.print("Scegli numero");
-  lcd.setCursor(7, 1);
-  lcd.print(ngio1);
+  if (turnogiocatore % 2 == 1)
+  {
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Gioca G2");
+    delay(1500);
+    lcd.clear();
+    lcd.setCursor(2, 0);
+    lcd.print("Scegli numero");
+    lcd.setCursor(7, 1);
+    lcd.print(ngio2);
+  } else {
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Gioca G1");
+    delay(1500);
+    lcd.clear();
+    lcd.setCursor(2, 0);
+    lcd.print("Scegli numero");
+    lcd.setCursor(7, 1);
+    lcd.print(ngio1);
+  }
 }
 
 void aggiornavariabili()
@@ -211,16 +298,16 @@ void aggiornavariabili()
     lcd.clear();
     lcd.setCursor(4, 0);
     lcd.print("Punteggio");
-    lcd.setCursor(7,1);
+    lcd.setCursor(7, 1);
     lcd.print(punteggiomomentaneo);
     delay(1500);
     turnogiocatore++;
-    } else {
+  } else {
     punteggiomomentaneo += ngio1;
     lcd.clear();
     lcd.setCursor(4, 0);
     lcd.print("Punteggio");
-    lcd.setCursor(7,1);
+    lcd.setCursor(7, 1);
     lcd.print(punteggiomomentaneo);
     delay(1500);
     turnogiocatore++;
@@ -229,7 +316,18 @@ void aggiornavariabili()
 
 void sceltagiocatore()
 {
-
+  if (turnogiocatore == 0)
+  {
+    turnozero();
+  } else {
+    if (turnogiocatore % 2 == 1)
+    {
+      turno();
+    } else if (turnogiocatore % 2 == 0)
+    {
+      turno();
+    }
+  }
 }
 
 
@@ -242,6 +340,6 @@ void loop() {
   }
   else if (turnopartita == 1)
   {
-    turnozero();
+    sceltagiocatore();
   }
 }
