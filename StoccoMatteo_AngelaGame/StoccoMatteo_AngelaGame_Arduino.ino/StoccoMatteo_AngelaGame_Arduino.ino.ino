@@ -161,7 +161,6 @@ void turnozero()
     if (BottonePremuto() == SELECT)
     {
       aggiornavariabili();
-      ngio1 = 1;
       finito = true;
       delay(1000);
     }
@@ -184,11 +183,13 @@ void turno()
       } else {
         aggiornavariabili();
         finito = true;
+        vittoria();
         delay(1000);
       }
     }
   }
 }
+
 
 //Scelta giocatore 1
 void Giocatore1()
@@ -218,7 +219,7 @@ void Giocatore1()
           lcd.setCursor(7, 1);
           lcd.print(ngio1);
         }
-      }else{
+      } else {
         if (ngio1 > 1)
         {
           while (BottonePremuto() == DOWN)
@@ -338,6 +339,7 @@ void aggiornavariabili()
     lcd.print(punteggiomomentaneo);
     delay(1500);
     turnogiocatore++;
+    ngio1 = 1;
   } else {
     punteggiomomentaneo += ngio1;
     lcd.clear();
@@ -347,6 +349,7 @@ void aggiornavariabili()
     lcd.print(punteggiomomentaneo);
     delay(1500);
     turnogiocatore++;
+    ngio2 = 1;
   }
 }
 
@@ -361,6 +364,21 @@ void sceltagiocatore()
   }
 }
 
+//Vittoria
+void vittoria()
+{
+  if (punteggioobiettivo == punteggiomomentaneo)
+  {
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Hai vinto");
+  } else if (punteggioobiettivo < punteggiomomentaneo)
+  {
+    lcd.clear();
+    lcd.setCursor(4, 0);
+    lcd.print("Hai perso");
+  }
+}
 
 void loop() {
   // put your main code here, to run repeatedly:
