@@ -33,8 +33,8 @@ int BottonePremuto() {
 
 void setup() {
   lcd.begin(16, 2);
-  lcd.setCursor(2, 0);
-  lcd.print("Angela Game");
+  lcd.setCursor(0, 0);
+  lcd.print("-Angela Game-");
   delay(3000);
 }
 
@@ -143,7 +143,7 @@ void sceltapunteggio()
 void inizia()
 {
   lcd.clear();
-  lcd.setCursor(2, 0);
+  lcd.setCursor(2, 1);
   lcd.print("Inizio gioco");
   aspetta();
   delay(1000);
@@ -311,8 +311,12 @@ void messaggio()
     lcd.clear();
     lcd.setCursor(2, 0);
     lcd.print("Scegli numero");
+    lcd.setCursor(0, 1);
+    lcd.print("(-)");
     lcd.setCursor(7, 1);
     lcd.print(ngio2);
+    lcd.setCursor(13, 1);
+    lcd.print("(+)");
   } else {
     lcd.clear();
     lcd.setCursor(4, 0);
@@ -321,8 +325,12 @@ void messaggio()
     lcd.clear();
     lcd.setCursor(2, 0);
     lcd.print("Scegli numero");
+    lcd.setCursor(0, 1);
+    lcd.print("(-)");
     lcd.setCursor(7, 1);
     lcd.print(ngio1);
+    lcd.setCursor(13, 1);
+    lcd.print("(+)");
   }
 }
 
