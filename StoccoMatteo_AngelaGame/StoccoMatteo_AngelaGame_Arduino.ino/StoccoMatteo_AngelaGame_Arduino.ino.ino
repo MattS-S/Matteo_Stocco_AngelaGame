@@ -34,7 +34,7 @@ int BottonePremuto() {
 void setup() {
   lcd.begin(16, 2);
   lcd.setCursor(0, 0);
-  lcd.print("-Angela Game-");
+  lcd.print("--Angela  Game--");
   delay(3000);
 }
 
@@ -124,8 +124,12 @@ void sceltapunteggio()
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Scelta Punteggio");
+  lcd.setCursor(0, 1);
+  lcd.print("(-)");
   lcd.setCursor(7, 1);
   lcd.print(punteggioobiettivo);
+  lcd.setCursor(13, 1);
+  lcd.print("(+)");
   bool finito = false;
   while (!finito)
   {
@@ -142,7 +146,6 @@ void sceltapunteggio()
 //Inizio Gioco
 void inizia()
 {
-  lcd.clear();
   lcd.setCursor(2, 1);
   lcd.print("Inizio gioco");
   aspetta();
@@ -169,26 +172,31 @@ void turnozero()
 //Turni generali
 void turno()
 {
-  messaggio();
-  bool finito = false;
-  while (!finito)
+  if (punteggiomomentaneo < punteggioobiettivo)
   {
-    NumeroGiocatore();
-    if ((BottonePremuto() == SELECT))
+    messaggio();
+    bool finito = false;
+    while (!finito)
     {
-      if (controllogiocatore() == false)
+      NumeroGiocatore();
+      if ((BottonePremuto() == SELECT))
       {
-        messaggio();
-        NumeroGiocatore();
-      } else {
-        aggiornavariabili();
-        finito = true;
-        vittoria();
-        delay(1000);
+        if (controllogiocatore() == false)
+        {
+          messaggio();
+          NumeroGiocatore();
+        } else {
+          aggiornavariabili();
+          finito = true;
+        }
       }
     }
+  } else {
+    vittoria();
+    delay(1000);
   }
 }
+
 
 
 //Scelta giocatore 1
@@ -307,10 +315,10 @@ void messaggio()
     lcd.clear();
     lcd.setCursor(4, 0);
     lcd.print("Gioca G2");
-    delay(1500);
+    delay(2000);
     lcd.clear();
-    lcd.setCursor(2, 0);
-    lcd.print("Scegli numero");
+    lcd.setCursor(0, 0);
+    lcd.print("Scegli numero:" + String(punteggiomomentaneo));
     lcd.setCursor(0, 1);
     lcd.print("(-)");
     lcd.setCursor(7, 1);
@@ -321,10 +329,10 @@ void messaggio()
     lcd.clear();
     lcd.setCursor(4, 0);
     lcd.print("Gioca G1");
-    delay(1500);
+    delay(2000);
     lcd.clear();
-    lcd.setCursor(2, 0);
-    lcd.print("Scegli numero");
+    lcd.setCursor(0, 0);
+    lcd.print("Scegli numero:" + String(punteggiomomentaneo));
     lcd.setCursor(0, 1);
     lcd.print("(-)");
     lcd.setCursor(7, 1);
@@ -341,8 +349,8 @@ void aggiornavariabili()
   {
     punteggiomomentaneo += ngio2;
     lcd.clear();
-    lcd.setCursor(4, 0);
-    lcd.print("Punteggio");
+    lcd.setCursor(0, 0);
+    lcd.print("Punteggio totale");
     lcd.setCursor(7, 1);
     lcd.print(punteggiomomentaneo);
     delay(1500);
@@ -351,8 +359,8 @@ void aggiornavariabili()
   } else {
     punteggiomomentaneo += ngio1;
     lcd.clear();
-    lcd.setCursor(4, 0);
-    lcd.print("Punteggio");
+    lcd.setCursor(0, 0);
+    lcd.print("Punteggio totale");
     lcd.setCursor(7, 1);
     lcd.print(punteggiomomentaneo);
     delay(1500);
@@ -377,14 +385,36 @@ void vittoria()
 {
   if (punteggioobiettivo == punteggiomomentaneo)
   {
-    lcd.clear();
-    lcd.setCursor(4, 0);
-    lcd.print("Hai vinto");
+    if (turnogiocatore % 2 == 1)
+    {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("Giocatore 1");
+      lcd.setCursor(3, 1);
+      lcd.print("Hai vinto!!");
+    } else {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("Giocatore 2");
+      lcd.setCursor(3, 1);
+      lcd.print("Hai vinto!!");
+    }
   } else if (punteggioobiettivo < punteggiomomentaneo)
   {
-    lcd.clear();
-    lcd.setCursor(4, 0);
-    lcd.print("Hai perso");
+    if (turnogiocatore % 2 == 1)
+    {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("Giocatore 1");
+      lcd.setCursor(3, 1);
+      lcd.print("Hai Perso!!");
+    } else {
+      lcd.clear();
+      lcd.setCursor(3, 0);
+      lcd.print("Giocatore 2");
+      lcd.setCursor(3, 1);
+      lcd.print("Hai Perso!!");
+    }
   }
 }
 
