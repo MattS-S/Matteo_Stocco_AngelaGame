@@ -317,8 +317,8 @@ void messaggio()
     lcd.print("Gioca G2");
     delay(2000);
     lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Scegli numero:" + String(punteggiomomentaneo));
+    lcd.setCursor(3, 0);
+    lcd.print("G2: " + String(punteggiomomentaneo) + " - " + String(punteggioobiettivo));
     lcd.setCursor(0, 1);
     lcd.print("(-)");
     lcd.setCursor(7, 1);
@@ -331,8 +331,8 @@ void messaggio()
     lcd.print("Gioca G1");
     delay(2000);
     lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Scegli numero:" + String(punteggiomomentaneo));
+    lcd.setCursor(3, 0);
+    lcd.print("G1: " + String(punteggiomomentaneo) + " - " + String(punteggioobiettivo));
     lcd.setCursor(0, 1);
     lcd.print("(-)");
     lcd.setCursor(7, 1);
@@ -405,15 +405,15 @@ void vittoria()
     {
       lcd.clear();
       lcd.setCursor(3, 0);
-      lcd.print("Giocatore 1");
+      lcd.print("Giocatore 2");
       lcd.setCursor(3, 1);
-      lcd.print("Hai Perso!!");
+      lcd.print("Hai Vinto!!");
     } else {
       lcd.clear();
       lcd.setCursor(3, 0);
-      lcd.print("Giocatore 2");
+      lcd.print("Giocatore 1");
       lcd.setCursor(3, 1);
-      lcd.print("Hai Perso!!");
+      lcd.print("Hai Vinto!!");
     }
   }
 }
